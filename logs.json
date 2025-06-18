@@ -1,0 +1,38 @@
+[
+    {
+        "timestamp": "2025-06-16T10:00:00",
+        "level": "INFO",
+        "user": "user1",
+        "message": "Started process"
+    },
+    {
+        "timestamp": "2025-06-16T10:00:01",
+        "level": "ERROR",
+        "user": "user1",
+        "message": "Failed to connect"
+    },
+    {
+        "timestamp": "2025-06-16T10:00:02",
+        "level": "INFO",
+        "user": "user2",
+        "message": "Login successful"
+    },
+    {
+        "timestamp": "2025-06-16T10:00:03",
+        "level": "WARN",
+        "user": "user3",
+        "message": "Low memory"
+    },
+    {
+        "timestamp": "2025-06-16T10:00:04",
+        "level": "ERROR",
+        "user": "user2",
+        "message": "Timeout occurred"
+    },
+    {
+        "timestamp": "2025-06-16T10:00:05",
+        "level": "INFO",
+        "user": "user1",
+        "message": "Retrying connection"
+    }
+]
