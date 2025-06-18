@@ -1,6 +1,6 @@
 from collections import defaultdict, deque
-import functools
 
+# Sample logs
 logs = [
     "[2025-06-16T10:00:00] INFO user1: Started process",
     "[2025-06-16T10:00:01] ERROR user1: Failed to connect",
@@ -10,43 +10,47 @@ logs = [
     "[2025-06-16T10:00:05] INFO user1: Retrying connection"
 ]
 
-def parse_log(add_log):
-    def wrapper(log):
-        arr=log.split(" ", 3)
+# Data structures
+User_Dict = defaultdict(list)
+level_Dict = defaultdict(int)
+recent_logs = deque(maxlen=5)
+
+# Decorator to parse log line string into dictionary
+def parse_log(func):
+    def wrapper(log_line: str):
+        arr = log_line.split(" ", 3)
         timestamp = arr[0].strip("[]")
         level = arr[1]
-        user_part = arr[2].split(":")
-        message =  arr[3]
-        log_dict={
+        user = arr[2].split(":")[0]
+        message = arr[3]
+        log_dict = {
             "timestamp": timestamp,
             "level": level,
-            "user": user_part[0],
+            "user": user,
             "message": message.strip()
         }
-        result= add_log(log_dict)
-        print("Converted string ")
+        return func(log_dict)
     return wrapper
 
-User_Dict = defaultdict(list)
-level_Dict  = defaultdict(int)
-recent_logs = deque(maxlen=5)
-logs_dict = {}
-
+# Log processing function with decorator
 @parse_log
-def add_log(log):
+def add_log(log: dict):
     user = log["user"]
     level = log["level"]
-    
     recent_logs.append(log)
     User_Dict[user].append(log)
     level_Dict[level] += 1
-    
-    for i in logs:
-        add_log(i)
 
-print(User_Dict)
-print(level_Dict)
-print(recent_logs)
+# Feed logs
+for entry in logs:
+    add_log(entry)
 
+# Print results
+print("User Logs:")
+print(dict(User_Dict))
 
+print("\nLevel Counts:")
+print(dict(level_Dict))
 
+print("\nRecent Logs:")
+print(list(recent_logs))
