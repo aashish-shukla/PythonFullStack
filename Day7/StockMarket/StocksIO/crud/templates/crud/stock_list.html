@@ -1,0 +1,71 @@
+{% extends 'crud/base.html' %}
+{% block content %}
+<div class="text-center mb-5">
+    <img src="https://cdn-icons-png.flaticon.com/512/2721/2721270.png" alt="StockIO Logo" width="80" class="mb-2">
+    <h1 class="display-5 fw-bold">StockIO</h1>
+    <p class="lead text-muted">Your personal stock portfolio, powered by live Tiingo data.</p>
+    <form class="d-flex justify-content-center mb-3" method="get" action="{% url 'stock_list' %}">
+        <input class="form-control w-50 me-2" type="search" name="q" placeholder="Search stocks..." value="{{ query }}">
+        <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i> Search</button>
+        <a href="{% url 'stock_search' %}?q={{ query }}" class="btn btn-outline-secondary ms-2">Advanced Search</a>
+    </form>
+    <a href="{% url 'stock_create' %}" class="btn btn-lg btn-success mt-2">+ Add New Stock</a>
+</div>
+<div class="row g-4">
+    {% for item in stock_data %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0 stock-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-primary fs-6">{{ item.stock.ticker }}</span>
+                    <span class="badge bg-light text-dark border border-primary">Qty: {{ item.stock.user_stocks.count }}</span>
+                </div>
+                <h5 class="card-title mb-1">{{ item.stock.name }}</h5>
+                <p class="card-text small text-muted mb-2">{{ item.profile.description|default:item.stock.description|truncatechars:80 }}</p>
+                <div class="mb-2">
+                    <span class="fw-semibold text-secondary">Stored:</span>
+                    <span class="fw-bold text-dark">₹{{ item.stock.curr_price }}</span>
+                </div>
+                <div class="mb-3">
+                    <span class="fw-semibold text-secondary">Live:</span>
+                    {% if item.live_price %}
+                        <span class="fw-bold text-success">₹{{ item.live_price }}</span>
+                    {% else %}
+                        <span class="fw-bold text-danger">N/A</span>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'buy_stock' item.stock.ticker %}" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-cart-plus"></i> Buy
+                    </a>
+                    <a href="{% url 'watch_stock' item.stock.ticker %}" class="btn btn-outline-warning btn-sm">
+                        <i class="bi bi-eye"></i> Watch
+                    </a>
+                    <a href="{% url 'stock_update' item.stock.pk %}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                    <a href="{% url 'stock_delete' item.stock.pk %}" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center">
+        <p class="text-muted">No stocks available. Start by adding one!</p>
+    </div>
+    {% endfor %}
+</div>
+<footer class="mt-5 text-center text-muted small">
+    &copy; {{ now|date:"Y" }} StockIO &mdash; Powered by Tiingo API
+</footer>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    .stock-card:hover {
+        box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        transform: translateY(-2px) scale(1.01);
+        transition: all 0.2s;
+    }
+</style>
+{% endblock %}

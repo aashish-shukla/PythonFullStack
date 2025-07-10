@@ -1,0 +1,9 @@
+lazyLoding: componets are fetched when it required.
+// Lazy loading is a design pattern that postpones the loading of resources until they are actually needed.
+
+EagerLoding: componets are fetched when the app is loaded.
+// Eager loading is a design pattern that loads resources upfront, typically at application startup.
+
+caching: storing data in a cache to improve performance and reduce load times.
+// Caching is a technique used to store frequently accessed data in a temporary storage area (cache) to 
+improve performance and reduce load times.

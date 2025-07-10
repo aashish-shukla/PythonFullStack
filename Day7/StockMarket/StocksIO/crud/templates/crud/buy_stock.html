@@ -1,0 +1,15 @@
+{% extends 'crud/base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Buy {{ stock.ticker }} - {{ stock.name }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" required>
+        </div>
+        <button type="submit" class="btn btn-success">Buy Now</button>
+        <a href="{% url 'stock_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

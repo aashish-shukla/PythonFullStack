@@ -1,0 +1,25 @@
+{% extends 'crud/base.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Advanced Stock Search</h2>
+    <form method="get" class="mb-4">
+        <input type="text" name="q" class="form-control" placeholder="Search by symbol or name..." value="{{ query }}">
+        <button class="btn btn-primary mt-2" type="submit"><i class="bi bi-search"></i> Search</button>
+    </form>
+    {% if results %}
+        <ul class="list-group">
+            {% for stock in results %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ stock['ticker'] }}</strong> - {{ stock['name'] }}
+                        <span class="text-muted small">{{ stock['exchange'] }}</span>
+                    </div>
+                    <a href="{% url 'buy_stock' stock['ticker'] %}" class="btn btn-success btn-sm">Buy</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif query %}
+        <p class="text-muted">No results found for "{{ query }}".</p>
+    {% endif %}
+</div>
+{% endblock %}
