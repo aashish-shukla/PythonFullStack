@@ -1,5 +1,5 @@
 """
-URL configuration for products project.
+URL configuration for ECom project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -15,21 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from django.http import JsonResponse
-
-def api_root(request):
-    return JsonResponse({
-        'message': 'Welcome to Products API',
-        'endpoints': {
-            'products': '/api/products/',
-            'categories': '/api/categories/',
-            'admin': '/admin/',
-        }
-    })
+from django.urls import path
 
 urlpatterns = [
-    path('', api_root, name='api_root'),  # Add root URL
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
 ]
